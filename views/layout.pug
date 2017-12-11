@@ -2,6 +2,12 @@ doctype html
 html
   head
     title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
+
+    block stylesheets
+      link(rel='stylesheet', href='/stylesheets/style.css')
+
+    block scripts
+      script(src="/javascripts/knockout-latest.js")
   body
+    include header.pug
     block content

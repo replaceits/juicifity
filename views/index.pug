@@ -1,5 +1,64 @@
 extends layout
 
+block append scripts
+  script(src="/javascripts/index.js")
+
 block content
   h1= title
-  p Welcome to #{title}
+
+  .recipeContainer
+    .recipeBase
+      .recipeBaseItem
+        label Nicotine Base
+        input(
+          type='number'
+          name='inputNicotineBase'
+          value='100'
+          min='0'
+          data-bind='value: nicotineBase'
+        ) 
+        | mg/ml
+      .recipeBaseItem
+        label Target Nicotine
+        input(
+          type='number'
+          name='inputTargetNicotine'
+          value='3'
+          min='0'
+          data-bind='value: targetNicotine'
+        ) 
+        | mg/ml
+      .recipeBaseItem
+        label Batch Size
+        input(
+          type='number'
+          name='inputBatchSize'
+          value='10'
+          min='0'
+          data-bind='value: batchSize'
+        ) 
+        | mg/ml
+
+    hr
+
+    .recipeResults
+      .recipeResultsItem
+        | Nicotine Solution&nbsp;
+        span(
+          data-bind="text: resultNicotineSolutionML"
+        )
+        | ml&nbsp;
+        span(
+          data-bind="text: resultNicotineSolutionPercent"
+        )
+        | %
+      .recipeResultsItem
+        | VG&nbsp;
+        span(
+          data-bind="text: resultVGML"
+        )
+        | ml&nbsp;
+        span(
+          data-bind="text: resultVGPercent"
+        )
+        | %
