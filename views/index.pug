@@ -1,12 +1,15 @@
 extends layout
 
+block append stylesheets
+  link(rel='stylesheet', href="/stylesheets/index.css")
+
 block append scripts
   script(src="/javascripts/index.js")
 
 block content
   .recipeContainer
     .recipeBase
-      h2(id="recipeBaseTitle")
+      div(id="recipeBaseTitle" class="recipeSubTitle")
         | Base
       
       .recipeBaseItem
@@ -42,28 +45,37 @@ block content
           data-bind='value: batchSize'
         ) 
         | ml
+
+    hr
       
     .recipeFlavoring
-      h2(id="recipeFlavoringTitle")
+      div(id="recipeFlavoringTitle" class="recipeSubTitle")
         | Flavorings
       
-      span(
-        id="recipeFlavoringNoFlavors"
-        data-bind="text: noFlavors"
+      #recipeFlavoringNoFlavors(
+        data-bind="if: noFlavors"
       )
+        | No Flavors!
+        br
+        | Add one with the button below
 
+      .recipeFlavorsHeadingsContainer(
+        data-bind="ifnot: noFlavors"
+      )
+        .recipeFlavorsHeading
+          | Name
+        .recipeFlavorsHeading
+          | Amount
 
       .recipeFlavorsContainer(
         data-bind="foreach: flavors"
       )
-        .recipeFlavor
-          label Name
+        .recipeFlavorName
           input(
             type="text"
-            class="recipeFlavorName"
             data-bind="value: name, attr: {placeholder: index}"
           )
-          label Amount
+        .recipeFlavorAmount
           input(
             type="number"
             value="0"
@@ -72,7 +84,12 @@ block content
             step="any"
             data-bind="value: percent"
           )
-          | %
+          .recipeFlavorAmountPercent
+            | %
+          .recipeFlavorRemove
+            button(
+              data-bind="click: removeFlavor"
+            ) X
 
       button(
         id="recipeFlavoringAdd"
@@ -82,6 +99,12 @@ block content
     hr
 
     .recipeResults
+      .recipeResultsTitle(class="recipeSubTitle")
+        | Results
+
+      .recipeResultsItem.recipeResultsHeadings
+        | Name ml Percent
+
       .recipeResultsItem
         | Nicotine Solution&nbsp;
         span(

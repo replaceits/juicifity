@@ -10,8 +10,9 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     var flavorIndex = 1;
-    var Flavor = function flavor(batchSize) {
+    var Flavor = function flavor(batchSize, removeFlavorFromArray) {
         this.batchSize = batchSize;
+        this.removeFlavorFromArray = removeFlavorFromArray;
 
         this.name = ko.observable("");
         this.percent = ko.observable(0);
@@ -20,6 +21,10 @@ document.addEventListener("DOMContentLoaded", function() {
         }, this);
 
         this.index = "Flavor " + flavorIndex++;
+
+        this.removeFlavor = function removeFlavor() {
+            this.removeFlavorFromArray(this);
+        }
     }
 
     var indexViewModel = function indexViewModel() {
@@ -32,11 +37,15 @@ document.addEventListener("DOMContentLoaded", function() {
         this.flavors = ko.observableArray([]);
 
         this.noFlavors = ko.computed(function() {
-            return (this.flavors().length == 0 ? "No flavors!" : "");
+            return (this.flavors().length == 0 ? true : false);
         }, this);
 
+        this.removeFlavorFromArray = function removeFlavorFromArray(flavor) {
+            this.flavors.remove(flavor);
+        }.bind(this);
+
         this.addFlavor = function addFlavor() {
-            this.flavors.push(new Flavor(this.batchSize));
+            this.flavors.push(new Flavor(this.batchSize, this.removeFlavorFromArray));
         }
 
         this.totalFlavorML = ko.computed(function totalFlavorML() {
