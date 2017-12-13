@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     var valuePrecision = 2;
 
     var parsePrecision = function parseNumberToFloatValueWithSetPrecision(num, precision) {
@@ -16,7 +16,12 @@ document.addEventListener("DOMContentLoaded", function() {
 
         this.name = ko.observable("");
         this.percent = ko.observable(0);
-        this.ml = ko.computed(function() {
+
+        this.percentParsed = ko.computed(function () {
+            return parsePrecision(this.percent());
+        }, this);
+
+        this.ml = ko.computed(function () {
             return parsePrecision(this.batchSize() * this.percent() / 100);
         }, this);
 
@@ -32,11 +37,20 @@ document.addEventListener("DOMContentLoaded", function() {
         this.nicotineBase = ko.observable(100);
         this.targetNicotine = ko.observable(3);
         this.batchSize = ko.observable(10);
+        this.vgRatio = ko.observable(70);
+        this.pgRatio = ko.computed({
+            read: function () {
+                return 100 - this.vgRatio();
+            },
+            write: function (value) {
+                this.vgRatio(100 - value);
+            }
+        }, this);
 
         //Flavorings
         this.flavors = ko.observableArray([]);
 
-        this.noFlavors = ko.computed(function() {
+        this.noFlavors = ko.computed(function () {
             return (this.flavors().length == 0 ? true : false);
         }, this);
 
@@ -50,7 +64,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         this.totalFlavorML = ko.computed(function totalFlavorML() {
             var totalML = 0;
-            
+
             for (var i = 0; i < this.flavors().length; i++) {
                 totalML += parseFloat(this.flavors()[i].ml());
             }
@@ -60,7 +74,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         this.totalFlavorPercent = ko.computed(function totalFlavorML() {
             var totalPercent = 0;
-            
+
             for (var i = 0; i < this.flavors().length; i++) {
                 totalPercent += parseFloat(this.flavors()[i].percent());
             }
@@ -69,30 +83,46 @@ document.addEventListener("DOMContentLoaded", function() {
         }, this);
 
         // Results
-        this.resultNicotineSolutionML = ko.computed(function() {
+        this.resultBaseML = ko.computed(function () {
+            return parsePrecision(this.batchSize() - this.totalFlavorML());
+        }, this);
+
+        this.resultBasePercent = ko.computed(function () {
+            return parsePrecision(this.resultBaseML() / this.batchSize() * 100);
+        }, this);
+
+        this.resultNicotineSolutionML = ko.computed(function () {
             return parsePrecision(this.targetNicotine() / this.nicotineBase() * this.batchSize());
         }, this);
 
-        this.resultNicotineSolutionPercent = ko.computed(function() {
+        this.resultNicotineSolutionPercent = ko.computed(function () {
             return parsePrecision(this.resultNicotineSolutionML() / this.batchSize() * 100);
         }, this);
 
-        this.resultVGML = ko.computed(function() {
-            return parsePrecision(this.batchSize() - this.resultNicotineSolutionML() - this.totalFlavorML());
+        this.resultVGML = ko.computed(function () {
+            return parsePrecision((this.batchSize() * this.vgRatio() / 100));
         }, this);
 
-        this.resultVGPercent = ko.computed(function() {
+        this.resultVGPercent = ko.computed(function () {
             return parsePrecision(this.resultVGML() / this.batchSize() * 100);
         }, this);
 
-        this.resultFlavorsML = ko.computed(function() {
+        this.resultPGML = ko.computed(function () {
+            return parsePrecision((this.batchSize() * this.pgRatio() / 100) - this.resultNicotineSolutionML() - this.totalFlavorML());
+        }, this);
+
+        this.resultPGPercent = ko.computed(function () {
+            return parsePrecision(this.resultPGML() / this.batchSize() * 100);
+        }, this);
+
+        this.resultFlavorsML = ko.computed(function () {
             return parsePrecision(this.totalFlavorML());
         })
 
-        this.resultFlavorsPercent = ko.computed(function() {
+        this.resultFlavorsPercent = ko.computed(function () {
             return parsePrecision(this.totalFlavorPercent());
         })
     };
 
-    ko.applyBindings(indexViewModel);    
+    ko.applyBindings(indexViewModel);
 });

@@ -9,47 +9,85 @@ block append scripts
 block content
   .recipeContainer
     .recipeBase
-      div(id="recipeBaseTitle" class="recipeSubTitle")
+      #recipeBaseTitle.recipeSubTitle
         | Base
       
-      .recipeBaseItem
-        label Nicotine Base
+      .recipeBaseName
+        | Nicotine Base
+      .recipeBaseAmount
         input(
           type='number'
           name='inputNicotineBase'
           value='100'
           min='0'
           step="any"
-          data-bind='value: nicotineBase'
-        ) 
+          data-bind="value: nicotineBase, valueUpdate: ['input', 'afterkeydown']"
+        )
+      .recipeBaseType
         | mg/ml
-      .recipeBaseItem
-        label Target Nicotine
+      
+      .recipeBaseName
+        | Target Nicotine
+      .recipeBaseAmount
         input(
           type='number'
           name='inputTargetNicotine'
           value='3'
           min='0'
           step="any"
-          data-bind='value: targetNicotine'
-        ) 
+          data-bind="value: targetNicotine, valueUpdate: ['input', 'afterkeydown']"
+        )
+      .recipeBaseType 
         | mg/ml
-      .recipeBaseItem
-        label Batch Size
+
+      .recipeBaseName
+        | VG Ratio
+      .recipeBaseAmount
         input(
-          type='number'
-          name='inputBatchSize'
-          value='10'
-          min='0'
+          type="number"
+          name="inputVGAmount"
+          value="70"
+          min="0"
+          max="100"
           step="any"
-          data-bind='value: batchSize'
+          data-bind="value: vgRatio, valueUpdate: ['input', 'afterkeydown']"
+        )
+      .recipeBaseType
+        | %
+      
+      .recipeBaseName
+        | PG Ratio
+      .recipeBaseAmount
+        input(
+          type="number"
+          name="inputPGAmount"
+          value="30"
+          min="0"
+          max="100"
+          step="any"
+          data-bind="value: pgRatio, valueUpdate: ['input', 'afterkeydown']"
+        )
+      .recipeBaseType
+        | %
+      
+      .recipeBaseName
+        | Batch Size
+      .recipeBaseAmount
+        input(
+          type="number"
+          name="inputBatchSize"
+          value="10"
+          min="0"
+          step="any"
+          data-bind="value: batchSize, valueUpdate: ['input', 'afterkeydown']"
         ) 
+      .recipeBaseType
         | ml
 
     hr
       
     .recipeFlavoring
-      div(id="recipeFlavoringTitle" class="recipeSubTitle")
+      #recipeFlavoringTitle.recipeSubTitle
         | Flavorings
       
       #recipeFlavoringNoFlavors(
@@ -73,7 +111,7 @@ block content
         .recipeFlavorName
           input(
             type="text"
-            data-bind="value: name, attr: {placeholder: index}"
+            data-bind="value: name, attr: {placeholder: index}, valueUpdate: ['input', 'afterkeydown']"
           )
         .recipeFlavorAmount
           input(
@@ -82,7 +120,7 @@ block content
             min="0"
             max="100"
             step="any"
-            data-bind="value: percent"
+            data-bind="value: percent, valueUpdate: ['input', 'afterkeydown']"
           )
           .recipeFlavorAmountPercent
             | %
@@ -99,40 +137,88 @@ block content
     hr
 
     .recipeResults
-      .recipeResultsTitle(class="recipeSubTitle")
+      #recipeResultsTitle.recipeSubTitle
         | Results
 
-      .recipeResultsItem.recipeResultsHeadings
-        | Name ml Percent
+      .recipeResultsHeading
+        | Name
+      .recipeResultsHeading
+        | ml
+      .recipeResultsHeading
+        | Percent
 
-      .recipeResultsItem
-        | Nicotine Solution&nbsp;
+      .recipeResultName.recipeResultBaseTotal
+        | Base Total
+      .recipeResultML.recipeResultBaseTotal(
+        data-bind="text: resultBaseML"
+      )
+      .recipeResultMLSymbol.recipeResultBaseTotal
+        | ml
+      .recipeResultPercent.recipeResultBaseTotal
+        span(
+          data-bind="text: resultBasePercent"
+        )
+        | %
+
+      .recipeResultName
+        | Nicotine Solution
+      .recipeResultML
         span(
           data-bind="text: resultNicotineSolutionML"
         )
-        | ml&nbsp;
+      .recipeResultMLSymbol
+        | ml
+      .recipeResultPercent
         span(
           data-bind="text: resultNicotineSolutionPercent"
         )
         | %
-      .recipeResultsItem
-        | VG&nbsp;
+
+      .recipeResultName
+        | VG
+      .recipeResultML
         span(
           data-bind="text: resultVGML"
         )
-        | ml&nbsp;
+      .recipeResultMLSymbol
+        | ml
+      .recipeResultPercent
         span(
           data-bind="text: resultVGPercent"
         )
         | %
-      .recipeResultsItem(
+      
+      .recipeResultName
+        | PG
+      .recipeResultML
+        span(
+          data-bind="text: resultPGML"
+        )
+      .recipeResultMLSymbol
+        | ml
+      .recipeResultPercent
+        span(
+          data-bind="text: resultPGPercent"
+        )
+        | %
+
+      .recipeResultName.recipeResultFlavorTotal(
         data-bind="if: flavors().length > 0"
       )
-        | Flavors&nbsp;
+        | Flavor Total
+      .recipeResultML.recipeResultFlavorTotal(
+        data-bind="if: flavors().length > 0"
+      )
         span(
           data-bind="text: resultFlavorsML"
         )
-        | ml&nbsp;
+      .recipeResultMLSymbol.recipeResultFlavorTotal(
+        data-bind="if: flavors().length > 0"
+      )
+        | ml
+      .recipeResultPercent.recipeResultFlavorTotal(
+        data-bind="if: flavors().length > 0"
+      )
         span(
           data-bind="text: resultFlavorsPercent"
         )
@@ -141,26 +227,27 @@ block content
       .recipeResultsFlavoringsContainer(
         data-bind="foreach: flavors"
       )
-        .recipeResultsItem
-          span
+        .recipeResultName
+          span(
+            data-bind="if: name().length > 0"
+          )
             span(
-              data-bind="if: name().length > 0"
+              data-bind="text: name"
             )
-              span(
-                data-bind="text: name"
-              )
+          span(
+            data-bind="if: name().length == 0"
+          )
             span(
-              data-bind="if: name().length == 0"
+              data-bind="text: index"
             )
-              span(
-                data-bind="text: index"
-              )
-          | &nbsp;
+        .recipeResultML
           span(
             data-bind="text: ml"
           )
-          | ml&nbsp;
+        .recipeResultMLSymbol
+          | ml
+        .recipeResultPercent
           span(
-            data-bind="text: percent"
+            data-bind="text: percentParsed"
           )
           | %

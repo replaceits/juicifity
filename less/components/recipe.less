@@ -19,6 +19,32 @@
         font-size: 1.5em;
     }
 
+    & .recipeBase {
+        display: grid;
+
+        grid-template-columns: 50% 1fr auto;
+
+        align-items: center;
+
+        & #recipeBaseTitle {
+            grid-column-start: 1;
+            grid-column-end: span 3;
+        }
+
+        & .recipeBaseAmount {
+            width: 100%;
+
+            & input {
+                width: 100%;
+                text-align: right;
+            }
+        }
+
+        & .recipeBaseType {
+            font-size: 0.9em;
+        }
+    }
+
     & .recipeFlavoring {
         text-align: center;
 
@@ -90,6 +116,78 @@
 
         & #recipeFlavoringAdd {
             margin-top: 10px;
+        }
+    }
+
+    & .recipeResults {
+        display: grid;
+
+        grid-template-columns: 1fr auto auto 1fr;
+
+        & .recipeResultsFlavoringsContainer {
+            grid-column-start: 1;
+            grid-column-end: span 4;
+
+            display: grid;
+            
+            grid-template-columns: 1fr auto auto 1fr;
+        }
+
+        & #recipeResultsTitle {
+            grid-column-start: 1;
+            grid-column-end: span 4;
+        }
+
+        & .recipeResultsHeading {
+            font-size: 1.1em;
+            font-weight: 600;
+
+            padding-bottom: 0.25em;
+
+            &:nth-of-type(2) {
+                text-align: left;
+            }
+
+            &:nth-of-type(3) {
+                text-align: center;
+                
+                grid-column-start: 2;
+                grid-column-end: span 2;
+            }
+
+            &:nth-of-type(4) {
+                text-align: right;
+            }
+        }
+
+        & .recipeResultName {
+            text-align: left;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+          
+            -ms-word-break: break-all;
+            word-break: break-all;
+          
+            -ms-hyphens: auto;
+            -moz-hyphens: auto;
+            -webkit-hyphens: auto;
+            hyphens: auto;
+        }
+
+        & .recipeResultML {
+            text-align: right;
+        }
+
+        & .recipeResultMLSymbol {
+            text-align: left;
+        }
+
+        & .recipeResultPercent {
+            text-align: right;
+        }
+
+        & .recipeResultFlavorTotal, & .recipeResultBaseTotal {
+            font-weight: 600;
         }
     }
 }
