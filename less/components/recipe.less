@@ -4,6 +4,7 @@
     box-sizing: border-box;
 
     padding: 1em;
+    margin-bottom: 1em;
 
     border: 1px solid #EEE;
     border-radius: 5px;
@@ -11,6 +12,15 @@
     width: 100%;
 
     box-shadow: 0px 3px 4px #EEE;
+
+    & .recipeName {
+        width: 80%;
+        margin-left: 10%;
+
+        text-align: center;
+        font-size: 1.75em;
+        font-weight: 600;
+    }
 
     & .recipeSubTitle {
         text-align: center;
@@ -29,6 +39,7 @@
         & #recipeBaseTitle {
             grid-column-start: 1;
             grid-column-end: span 3;
+            padding-bottom: 0.25em;
         }
 
         & .recipeBaseAmount {
@@ -42,6 +53,10 @@
 
         & .recipeBaseType {
             font-size: 0.9em;
+        }
+
+        & .recipeBaseAmount, & .recipeBaseType, & .recipeBaseName {
+            padding: 2.5px;
         }
     }
 
@@ -188,6 +203,7 @@
 
         & .recipeResultFlavorTotal, & .recipeResultBaseTotal {
             font-weight: 600;
+            font-size: 1.05em;
         }
     }
 }

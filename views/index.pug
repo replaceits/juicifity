@@ -8,6 +8,14 @@ block append scripts
 
 block content
   .recipeContainer
+    input(
+      class="recipeName"
+      type="text"
+      placeholder="Recipe Name"
+      data-bind="value: recipeName, valueUpdate: ['input', 'afterkeydown']"
+    )
+
+  .recipeContainer
     .recipeBase
       #recipeBaseTitle.recipeSubTitle
         | Base
@@ -84,8 +92,7 @@ block content
       .recipeBaseType
         | ml
 
-    hr
-      
+  .recipeContainer  
     .recipeFlavoring
       #recipeFlavoringTitle.recipeSubTitle
         | Flavorings
@@ -134,11 +141,16 @@ block content
         data-bind="click: addFlavor"
       ) Add
 
-    hr
-
+  .recipeContainer
     .recipeResults
       #recipeResultsTitle.recipeSubTitle
         | Results
+        span(
+          data-bind="if: recipeName().length > 0"
+        )
+          span(
+            data-bind="text: ' - ' + recipeName()"
+          )
 
       .recipeResultsHeading
         | Name

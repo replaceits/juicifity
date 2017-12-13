@@ -33,6 +33,8 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     var indexViewModel = function indexViewModel() {
+        this.recipeName = ko.observable("");
+
         // Base
         this.nicotineBase = ko.observable(100);
         this.targetNicotine = ko.observable(3);
