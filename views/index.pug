@@ -263,3 +263,15 @@ block content
             data-bind="text: percentParsed"
           )
           | %
+  .recipeContainer
+    #optionsContainer
+      button(
+        id="saveRecipe"
+        data-bind="click: saveRecipe"
+      ) Save
+
+      button(
+        id="resetRecipe"
+        data-bind="click: resetRecipe"
+      ) Reset
+    

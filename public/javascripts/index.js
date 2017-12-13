@@ -124,6 +124,57 @@ document.addEventListener("DOMContentLoaded", function () {
         this.resultFlavorsPercent = ko.computed(function () {
             return parsePrecision(this.totalFlavorPercent());
         })
+
+        // Options
+        this.saveRecipe = function saveRecipe() {
+            var xhttp = new XMLHttpRequest();
+
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == XMLHttpRequest.DONE) {
+                    if (this.status >= 200 && this.status < 300) {
+                        var response = JSON.parse(this.responseText);
+
+                        if (response.posted) {
+                            window.location.pathname = '/recipes/' + response.id;
+                        } else {
+                            // TODO: Invalid request
+                        }
+                    } else {
+                        // TODO: Invalid request
+                    }
+                }
+            };
+
+            var tmpFlavors = [];
+
+            for (var i = 0; i < this.flavors().length; i++) {
+                tmpFlavors.push({
+                    name: this.flavors()[i].name(),
+                    percent: this.flavors()[i].percent()
+                });
+            }
+
+            xhttp.open("POST", "/recipes/add", true);
+            xhttp.setRequestHeader("Content-Type", "application/json");
+            xhttp.send(JSON.stringify({
+                recipeName: this.recipeName(),
+                nicotineBase: this.nicotineBase(),
+                targetNicotine: this.targetNicotine(),
+                vgRatio: this.vgRatio(),
+                batchSize: this.batchSize(),
+                flavors: tmpFlavors
+            }));
+        }.bind(this);
+
+        this.resetRecipe = function resetRecipe() {
+            this.recipeName("");
+            this.nicotineBase(100);
+            this.targetNicotine(3);
+            this.batchSize(10);
+            this.vgRatio(70);
+            this.flavors([]);
+            flavorIndex = 1;
+        }.bind(this);
     };
 
     ko.applyBindings(indexViewModel);

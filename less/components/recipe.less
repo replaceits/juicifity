@@ -206,4 +206,38 @@
             font-size: 1.05em;
         }
     }
+
+    & #optionsContainer {
+        display: flex;
+
+        align-content: center;
+        align-items: center;
+        justify-content: space-around;
+
+        width: 100%;
+
+        & #saveRecipe {
+            background-color: @color-primary-light;
+
+            &:hover {
+                background-color: @color-primary;
+            }
+
+            &:focus {
+                background-color: @color-primary-dark;
+            }
+        }
+
+        & #resetRecipe {
+            background-color: @color-secondary-light;
+
+            &:hover {
+                background-color: @color-secondary;
+            }
+
+            &:focus {
+                background-color: @color-secondary-dark;
+            }
+        }
+    }
 }
