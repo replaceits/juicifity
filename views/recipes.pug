@@ -1,0 +1,99 @@
+extends layout
+
+block content
+  //- Begin Code block
+  -
+    var parsePrecision = function parseNumberToFloatValueWithSetPrecision(num, precision) {
+        return Number(
+            parseFloat(num).toFixed(
+                (precision == undefined ? valuePrecision : precision)
+            )
+        );
+    }
+
+    recipe.vgML = parsePrecision(recipe.batchSize * recipe.vgRatio / 100)
+
+    recipe.resultNicotineSolutionML = parsePrecision(recipe.targetNicotine / recipe.nicotineBase * recipe.batchSize);
+    recipe.resultNicotineSolutionPercent = parsePrecision(recipe.resultNicotineSolutionML / recipe.batchSize * 100);
+
+    recipe.totalFlavorPercent = 0;
+    recipe.totalFlavorML = 0;
+    for (var i = 0; i < recipe.flavors.length; i++) {
+      recipe.totalFlavorPercent += parseFloat(recipe.flavors[i].percent);
+      recipe.flavors[i].ml = parseFloat(recipe.batchSize * recipe.flavors[i].percent / 100);
+      recipe.totalFlavorML += recipe.flavors[i].ml;
+    }
+    recipe.totalFlavorPercent = parsePrecision(recipe.totalFlavorPercent);
+    recipe.totalFlavorML = parsePrecision(recipe.totalFlavorML);
+
+    recipe.pgRatio = parsePrecision(100 - recipe.vgRatio);
+    recipe.pgML = parsePrecision((recipe.batchSize * recipe.pgRatio / 100) - recipe.resultNicotineSolutionML - recipe.totalFlavorML)
+    recipe.resultPGPercent = parsePrecision(recipe.pgML / recipe.batchSize * 100);
+
+    recipe.resultBaseML = parsePrecision(recipe.batchSize - recipe.totalFlavorML);
+    recipe.resultBasePercent = parsePrecision(recipe.resultBaseML / recipe.batchSize * 100);
+  //- End Code Block
+
+  .recipeContainer
+    .recipeName 
+      | !{recipe.recipeName}
+
+  .recipeContainer
+    .recipeComplete
+      .recipeResultsHeading
+        | Name
+      .recipeResultsHeading
+        | ml
+      .recipeResultsHeading
+        | Percent
+
+      .recipeResultName.recipeResultBaseTotal
+        | Base Total
+      .recipeResultML.recipeResultBaseTotal= recipe.resultBaseML
+      .recipeResultMLSymbol.recipeResultBaseTotal
+        | ml
+      .recipeResultPercent.recipeResultBaseTotal
+        | #{recipe.resultBasePercent}%
+
+      .recipeResultName
+        | Nicotine Solution
+      .recipeResultML= recipe.resultNicotineSolutionML
+      .recipeResultMLSymbol
+        | ml
+      .recipeResultPercent
+        | #{recipe.resultNicotineSolutionPercent}%
+
+      .recipeResultName
+        | VG
+      .recipeResultML= recipe.vgML
+      .recipeResultMLSymbol
+        | ml
+      .recipeResultPercent
+        | #{recipe.vgRatio}%
+      
+      .recipeResultName
+        | PG
+      .recipeResultML= recipe.pgML
+      .recipeResultMLSymbol
+        | ml
+      .recipeResultPercent
+        | #{recipe.resultPGPercent}%
+    
+      if recipe.flavors.length > 0
+        .recipeResultName.recipeResultFlavorTotal
+          | Flavor Total
+        .recipeResultML.recipeResultFlavorTotal= recipe.totalFlavorML
+        .recipeResultMLSymbol.recipeResultFlavorTotal
+          | ml
+        .recipeResultPercent.recipeResultFlavorTotal
+          | #{recipe.totalFlavorPercent}%
+        
+        .recipeResultsFlavoringsContainer
+          each flavor in recipe.flavors
+            .recipeResultName= flavor.name
+
+            .recipeResultML= flavor.ml
+            .recipeResultMLSymbol
+                | ml
+            .recipeResultPercent
+                | #{flavor.percent}%

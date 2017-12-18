@@ -34,7 +34,10 @@ router.get(/^\/[a-zA-Z0-9_-]{7,14}$/, function (req, res, next) {
         res.status(500).send("Uh oh");
       }
       if (result) {
-        res.send(JSON.stringify(result));
+        res.render('recipes', {
+          title: 'Juicifity - ' + result.recipeName,
+          recipe: result
+        });
       } else {
         res.status(404).send("Not found.");
       }

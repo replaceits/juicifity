@@ -150,7 +150,7 @@ document.addEventListener("DOMContentLoaded", function () {
             for (var i = 0; i < this.flavors().length; i++) {
                 tmpFlavors.push({
                     name: this.flavors()[i].name(),
-                    percent: this.flavors()[i].percent()
+                    percent: parseFloat(this.flavors()[i].percent())
                 });
             }
 
@@ -158,10 +158,10 @@ document.addEventListener("DOMContentLoaded", function () {
             xhttp.setRequestHeader("Content-Type", "application/json");
             xhttp.send(JSON.stringify({
                 recipeName: this.recipeName(),
-                nicotineBase: this.nicotineBase(),
-                targetNicotine: this.targetNicotine(),
-                vgRatio: this.vgRatio(),
-                batchSize: this.batchSize(),
+                nicotineBase: parseFloat(this.nicotineBase()),
+                targetNicotine: parseFloat(this.targetNicotine()),
+                vgRatio: parseFloat(this.vgRatio()),
+                batchSize: parseFloat(this.batchSize()),
                 flavors: tmpFlavors
             }));
         }.bind(this);
