@@ -1,0 +1,316 @@
+.recipeContainer {
+    background-color: #FCFCFC;
+
+    box-sizing: border-box;
+
+    padding: 1em;
+    margin-bottom: 1em;
+
+    border: 1px solid #EEE;
+    border-radius: 5px;
+
+    width: 100%;
+
+    box-shadow: 0px 3px 4px #EEE;
+
+    & .recipeName {
+        width: 80%;
+        margin-left: 10%;
+
+        text-align: center;
+        font-size: 1.75em;
+        font-weight: 600;
+    }
+
+    & .recipeSubTitle {
+        text-align: center;
+        font-weight: 600;
+
+        font-size: 1.5em;
+    }
+
+    & .recipeBase {
+        display: grid;
+
+        grid-template-columns: 50% 1fr auto;
+
+        align-items: center;
+
+        & #recipeBaseTitle {
+            grid-column-start: 1;
+            grid-column-end: span 3;
+            padding-bottom: 0.25em;
+        }
+
+        & .recipeBaseAmount {
+            width: 100%;
+
+            & input {
+                width: 100%;
+                text-align: right;
+            }
+        }
+
+        & .recipeBaseType {
+            font-size: 0.9em;
+        }
+
+        & .recipeBaseAmount, & .recipeBaseType, & .recipeBaseName {
+            padding: 2.5px;
+        }
+    }
+
+    & .recipeFlavoring {
+        text-align: center;
+
+        & .recipeFlavorsHeadingsContainer {
+            display: flex;
+
+            & .recipeFlavorsHeading {
+                flex: 1 0 auto;
+
+                font-weight: 600;
+            }
+        }
+
+        & .recipeFlavorsContainer {
+            display: grid;
+
+            grid-template-columns: 50% 50%;
+
+            & .recipeFlavorName, & .recipeFlavorAmount {
+                padding: 2.5px;
+
+                box-sizing: border-box;
+
+                width: 100%;
+                max-width: 100%;
+            }
+
+            & .recipeFlavorName {
+                text-align: left;
+
+                input {
+                    width: 100%;
+                }
+            }
+
+            & .recipeFlavorAmount {
+                display: flex;
+                text-align: right;
+
+                & input {
+                    text-align: right;
+
+                    flex-grow: 1000;
+
+                    min-width: 0%;
+                }
+
+                & .recipeFlavorAmountPercent {
+                    flex-grow: 1;
+                }
+
+                & .recipeFlavorRemove {
+                    flex-grow: 1;
+
+                    margin-left: 10px;
+
+                    & button {
+                        margin: 0;
+                        padding: 0;
+
+                        height: 2em;
+                        width: 2em;
+                    
+                        border-radius: 100%;
+                    }
+                }
+            }
+        }
+
+        & #recipeFlavoringAdd {
+            margin-top: 10px;
+        }
+    }
+
+    & .recipeResults {
+        display: grid;
+
+        grid-template-columns: 1fr auto auto 1fr;
+
+        & .recipeResultsFlavoringsContainer {
+            grid-column-start: 1;
+            grid-column-end: span 4;
+
+            display: grid;
+            
+            grid-template-columns: 1fr auto auto 1fr;
+        }
+
+        & #recipeResultsTitle {
+            grid-column-start: 1;
+            grid-column-end: span 4;
+        }
+
+        & .recipeResultsHeading {
+            font-size: 1.1em;
+            font-weight: 600;
+
+            padding-bottom: 0.25em;
+
+            &:nth-of-type(2) {
+                text-align: left;
+            }
+
+            &:nth-of-type(3) {
+                text-align: center;
+                
+                grid-column-start: 2;
+                grid-column-end: span 2;
+            }
+
+            &:nth-of-type(4) {
+                text-align: right;
+            }
+        }
+
+        & .recipeResultName {
+            text-align: left;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+          
+            -ms-word-break: break-all;
+            word-break: break-all;
+          
+            -ms-hyphens: auto;
+            -moz-hyphens: auto;
+            -webkit-hyphens: auto;
+            hyphens: auto;
+        }
+
+        & .recipeResultML {
+            text-align: right;
+        }
+
+        & .recipeResultMLSymbol {
+            text-align: left;
+        }
+
+        & .recipeResultPercent {
+            text-align: right;
+        }
+
+        & .recipeResultFlavorTotal, & .recipeResultBaseTotal {
+            font-weight: 600;
+            font-size: 1.05em;
+        }
+    }
+
+    & #optionsContainer {
+        display: flex;
+
+        align-content: center;
+        align-items: center;
+        justify-content: space-around;
+
+        width: 100%;
+
+        & #saveRecipe {
+            background-color: @color-primary-light;
+
+            &:hover {
+                background-color: @color-primary;
+            }
+
+            &:focus {
+                background-color: @color-primary-dark;
+            }
+        }
+
+        & #resetRecipe {
+            background-color: @color-secondary-light;
+
+            &:hover {
+                background-color: @color-secondary;
+            }
+
+            &:focus {
+                background-color: @color-secondary-dark;
+            }
+        }
+    }
+
+    & .recipeComplete {
+        display: grid;
+
+        grid-template-columns: 1fr auto auto 1fr;
+
+        & .recipeResultsFlavoringsContainer {
+            grid-column-start: 1;
+            grid-column-end: span 4;
+
+            display: grid;
+            
+            grid-template-columns: 1fr auto auto 1fr;
+        }
+
+        & #recipeResultsTitle {
+            grid-column-start: 1;
+            grid-column-end: span 4;
+        }
+
+        & .recipeResultsHeading {
+            font-size: 1.1em;
+            font-weight: 600;
+
+            padding-bottom: 0.25em;
+
+            &:nth-of-type(1) {
+                text-align: left;
+            }
+
+            &:nth-of-type(2) {
+                text-align: center;
+                
+                grid-column-start: 2;
+                grid-column-end: span 2;
+            }
+
+            &:nth-of-type(3) {
+                text-align: right;
+            }
+        }
+
+        & .recipeResultName {
+            text-align: left;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+          
+            -ms-word-break: break-all;
+            word-break: break-all;
+          
+            -ms-hyphens: auto;
+            -moz-hyphens: auto;
+            -webkit-hyphens: auto;
+            hyphens: auto;
+        }
+
+        & .recipeResultML {
+            text-align: right;
+        }
+
+        & .recipeResultMLSymbol {
+            text-align: left;
+        }
+
+        & .recipeResultPercent {
+            text-align: right;
+        }
+
+        & .recipeResultFlavorTotal, & .recipeResultBaseTotal {
+            font-weight: 600;
+            font-size: 1.05em;
+        }
+    }
+}

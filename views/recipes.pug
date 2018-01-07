@@ -1,0 +1,125 @@
+extends layout
+
+block append scripts
+  script.
+    var recipe = !{JSON.stringify(recipe)};
+
+  script(src="/javascripts/recipes.js")
+
+block content
+  .recipeContainer
+    .recipeName(data-bind="text: recipeName")
+
+  .recipeContainer
+    .recipeComplete
+      .recipeResultsHeading
+        | Name
+      .recipeResultsHeading
+        | ml
+      .recipeResultsHeading
+        | Percent
+
+      .recipeResultName.recipeResultBaseTotal
+        | Base Total
+      .recipeResultML.recipeResultBaseTotal(
+        data-bind="text: resultBaseML"
+      )
+      .recipeResultMLSymbol.recipeResultBaseTotal
+        | ml
+      .recipeResultPercent.recipeResultBaseTotal
+        span(
+          data-bind="text: resultBasePercent"
+        )
+        | %
+
+      .recipeResultName
+        | Nicotine Solution
+      .recipeResultML
+        span(
+          data-bind="text: resultNicotineSolutionML"
+        )
+      .recipeResultMLSymbol
+        | ml
+      .recipeResultPercent
+        span(
+          data-bind="text: resultNicotineSolutionPercent"
+        )
+        | %
+
+      .recipeResultName
+        | VG
+      .recipeResultML
+        span(
+          data-bind="text: resultVGML"
+        )
+      .recipeResultMLSymbol
+        | ml
+      .recipeResultPercent
+        span(
+          data-bind="text: resultVGPercent"
+        )
+        | %
+      
+      .recipeResultName
+        | PG
+      .recipeResultML
+        span(
+          data-bind="text: resultPGML"
+        )
+      .recipeResultMLSymbol
+        | ml
+      .recipeResultPercent
+        span(
+          data-bind="text: resultPGPercent"
+        )
+        | %
+
+      .recipeResultName.recipeResultFlavorTotal(
+        data-bind="if: flavors().length > 0"
+      )
+        | Flavor Total
+      .recipeResultML.recipeResultFlavorTotal(
+        data-bind="if: flavors().length > 0"
+      )
+        span(
+          data-bind="text: resultFlavorsML"
+        )
+      .recipeResultMLSymbol.recipeResultFlavorTotal(
+        data-bind="if: flavors().length > 0"
+      )
+        | ml
+      .recipeResultPercent.recipeResultFlavorTotal(
+        data-bind="if: flavors().length > 0"
+      )
+        span(
+          data-bind="text: resultFlavorsPercent"
+        )
+        | %
+      
+      .recipeResultsFlavoringsContainer(
+        data-bind="foreach: flavors"
+      )
+        .recipeResultName
+          span(
+            data-bind="if: name().length > 0"
+          )
+            span(
+              data-bind="text: name"
+            )
+          span(
+            data-bind="if: name().length == 0"
+          )
+            span(
+              data-bind="text: index"
+            )
+        .recipeResultML
+          span(
+            data-bind="text: ml"
+          )
+        .recipeResultMLSymbol
+          | ml
+        .recipeResultPercent
+          span(
+            data-bind="text: percentParsed"
+          )
+          | %

@@ -1,0 +1,35 @@
+.headerBar {
+    position: fixed;
+
+    box-sizing: border-box;
+
+    top: 0;
+    left: 0;
+
+    width: 100vw;
+    
+    padding: 0.5em;
+
+    overflow: hidden;
+
+    border-bottom: 1px solid #EEE;
+
+    background: #FCFCFC;
+
+    box-shadow: 0px 0px 5px #EEE;
+
+    & .headerBarTitle {
+        margin-top: -0.1em;
+        padding-bottom: 0.1em;
+
+        & a {
+            font-family: 'Pacifico', cursive;
+            font-size: 2em;
+
+            background: linear-gradient(@color-primary-lighter, @color-primary, @color-primary-darker);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+    }
+}

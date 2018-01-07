@@ -1,6 +1,5 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener('DOMContentLoaded', function() {
     var valuePrecision = 2;
-
     var parsePrecision = function parseNumberToFloatValueWithSetPrecision(num, precision) {
         return Number(
             parseFloat(num).toFixed(
@@ -8,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
             )
         );
     }
-
+    
     var flavorIndex = 1;
     var Flavor = function flavor(batchSize, removeFlavorFromArray) {
         this.batchSize = batchSize;
@@ -32,14 +31,14 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    var indexViewModel = function indexViewModel() {
-        this.recipeName = ko.observable("");
+    var recipeViewModel = function recipeViewModel() {
+        this.recipeName = ko.observable(recipe.recipeName);
 
         // Base
-        this.nicotineBase = ko.observable(100);
-        this.targetNicotine = ko.observable(3);
-        this.batchSize = ko.observable(10);
-        this.vgRatio = ko.observable(70);
+        this.nicotineBase = ko.observable(recipe.nicotineBase);
+        this.targetNicotine = ko.observable(recipe.targetNicotine);
+        this.batchSize = ko.observable(recipe.batchSize);
+        this.vgRatio = ko.observable(recipe.vgRatio);
         this.pgRatio = ko.computed({
             read: function () {
                 return 100 - this.vgRatio();
@@ -50,7 +49,12 @@ document.addEventListener("DOMContentLoaded", function () {
         }, this);
 
         //Flavorings
-        this.flavors = ko.observableArray([]);
+        this.flavors = ko.observableArray(recipe.flavors.map(function(flavor) {
+            var tmpFlavor = new Flavor(this.batchSize, recipe.removeFlavorFromArray);
+            tmpFlavor.name(flavor.name);
+            tmpFlavor.percent(flavor.percent);
+            return tmpFlavor;
+        }));
 
         this.noFlavors = ko.computed(function () {
             return (this.flavors().length == 0 ? true : false);
@@ -124,58 +128,7 @@ document.addEventListener("DOMContentLoaded", function () {
         this.resultFlavorsPercent = ko.computed(function () {
             return parsePrecision(this.totalFlavorPercent());
         })
+    }
 
-        // Options
-        this.saveRecipe = function saveRecipe() {
-            var xhttp = new XMLHttpRequest();
-
-            xhttp.onreadystatechange = function () {
-                if (this.readyState == XMLHttpRequest.DONE) {
-                    if (this.status >= 200 && this.status < 300) {
-                        var response = JSON.parse(this.responseText);
-
-                        if (response.posted) {
-                            window.location.pathname = '/recipes/' + response.id;
-                        } else {
-                            // TODO: Invalid request
-                        }
-                    } else {
-                        // TODO: Invalid request
-                    }
-                }
-            };
-
-            var tmpFlavors = [];
-
-            for (var i = 0; i < this.flavors().length; i++) {
-                tmpFlavors.push({
-                    name: this.flavors()[i].name(),
-                    percent: parseFloat(this.flavors()[i].percent())
-                });
-            }
-
-            xhttp.open("POST", "/recipes/add", true);
-            xhttp.setRequestHeader("Content-Type", "application/json");
-            xhttp.send(JSON.stringify({
-                recipeName: this.recipeName(),
-                nicotineBase: parseFloat(this.nicotineBase()),
-                targetNicotine: parseFloat(this.targetNicotine()),
-                vgRatio: parseFloat(this.vgRatio()),
-                batchSize: parseFloat(this.batchSize()),
-                flavors: tmpFlavors
-            }));
-        }.bind(this);
-
-        this.resetRecipe = function resetRecipe() {
-            this.recipeName("");
-            this.nicotineBase(100);
-            this.targetNicotine(3);
-            this.batchSize(10);
-            this.vgRatio(70);
-            this.flavors([]);
-            flavorIndex = 1;
-        }.bind(this);
-    };
-
-    ko.applyBindings(indexViewModel);
+    ko.applyBindings(recipeViewModel);
 });
