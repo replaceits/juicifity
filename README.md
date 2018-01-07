@@ -1,2 +1,2 @@
 # juicifity
-An E-Juice calculator written with Knockout
+An E-Juice calculator written with Knockout!
